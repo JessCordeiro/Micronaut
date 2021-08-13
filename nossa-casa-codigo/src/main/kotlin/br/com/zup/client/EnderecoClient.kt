@@ -6,7 +6,7 @@ import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.client.annotation.Client
 
 
-@Client("https://viacep.com.br/ws")
+@Client("\${https://viacep.com.br/ws}")
 interface EnderecoClient {
 
     @Get("/{cep}/json/")
