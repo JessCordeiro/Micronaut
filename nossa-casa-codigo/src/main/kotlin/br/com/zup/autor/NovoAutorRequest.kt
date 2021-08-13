@@ -1,5 +1,6 @@
 package br.com.zup.autor
 
+import br.com.zup.client.EnderecoResponse
 import io.micronaut.core.annotation.Introspected
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -13,7 +14,7 @@ data class NovoAutorRequest (
     @field:NotBlank val cep: String,
     @field:NotBlank val numero:String
         ) {
-    fun paraAutor(): Autor {
+    fun paraAutor(EnderecoResponse: EnderecoResponse): Autor {
         return Autor(nome, email, descricao)
     }
 
