@@ -1,4 +1,4 @@
-package br.com.zup
+package br.com.zup.autor
 
 import java.time.LocalDateTime
 import javax.persistence.Entity

@@ -1,4 +1,4 @@
-package br.com.zup
+package br.com.zup.autor
 
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.*
@@ -6,11 +6,12 @@ import io.micronaut.http.uri.UriBuilder
 import io.micronaut.validation.Validated
 import javax.transaction.Transactional
 import javax.validation.Valid
-import io.micronaut.http.annotation.Controller
 
 @Validated
-@Controller( value="/autores")
-class CadastraAutorController(val autorRepository: AutorRepository) {
+@Controller("/autores")
+class CadastraAutorController(
+    val autorRepository: AutorRepository,
+) {
 
     @Post
     @Transactional
@@ -26,14 +27,13 @@ class CadastraAutorController(val autorRepository: AutorRepository) {
 
     @Get("/{id}")
     @Transactional
-    fun Lista(): HttpResponse<List<DetalhesDoAutorResponse>> {
+    fun Lista(@PathVariable id:String ): HttpResponse<Any> {
         val autores = autorRepository.findAll()
         val resposta = autores.map { autor -> DetalhesDoAutorResponse(autor) }
         return HttpResponse.ok(resposta)
     }
 
     @Get
-    @Transactional
     fun lista(@QueryValue(defaultValue = "") email: String): HttpResponse<Any> {
         if (email.isBlank()) {
             val autores = autorRepository.findAll()
@@ -41,21 +41,20 @@ class CadastraAutorController(val autorRepository: AutorRepository) {
             return HttpResponse.ok()
         }
         val possivelAutor = autorRepository.findByEmail(email)
-        if (possivelAutor.isEmpty){
+        if (possivelAutor.isEmpty) {
             return HttpResponse.notFound()
         }
-            val autor = possivelAutor.get()
+        val autor = possivelAutor.get()
         return HttpResponse.ok(DetalhesDoAutorResponse(autor))
     }
 
 
-
-    @Put("{/id}")
+    @Put("/{id}")
     @Transactional
-    fun atualiza(@PathVariable id:Long, descricao:String) : HttpResponse<Any>{
+    fun atualiza(@PathVariable id: Long, descricao: String): HttpResponse<Any> {
         val possivelAutor = autorRepository.findById(id)
 
-        if(possivelAutor.isEmpty){
+        if (possivelAutor.isEmpty) {
             return HttpResponse.notFound()
         }
         val autor = possivelAutor.get()
@@ -67,9 +66,9 @@ class CadastraAutorController(val autorRepository: AutorRepository) {
 
     @Delete("/{id}")
     @Transactional
-    fun deleta(@PathVariable id:Long) : HttpResponse<Any>{
+    fun deleta(@PathVariable id: Long): HttpResponse<Any> {
         val possivelAutor = autorRepository.findById(id)
-        if(possivelAutor.isEmpty){
+        if (possivelAutor.isEmpty) {
             return HttpResponse.notFound()
         }
 
